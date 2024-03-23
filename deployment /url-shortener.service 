@@ -1,0 +1,15 @@
+[Unit]
+Description=fortune-teller-telegram-bot
+After=network.target
+
+[Service]
+User=root
+WorkingDirectory=/root/apps/fortune-teller-telegram-bot
+ExecStart=/root/apps/fortune-teller-telegram-bot/fortune-teller-telegram-bot
+Restart=always
+RestartSec=4
+StandardOutput=inherit
+EnvironmentFile=/root/apps/fortune-teller-telegram-bot/config.env
+
+[Install]
+WantedBy=multi-user.target
