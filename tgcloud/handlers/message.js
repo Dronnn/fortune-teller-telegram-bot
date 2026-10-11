@@ -11,13 +11,17 @@ async function getMe() {
   return botMe;
 }
 
-// go equivalent: msg.IsCommand() + msg.Command()
+// go equivalent: msg.IsCommand() + msg.Command(), extended for group chats:
+// a command typed after a leading @mention ("@bot /help") counts too — that is
+// how people ask a bot for help in a group.
 function getCommand(message) {
   const text = message.text;
-  if (!text || !text.startsWith('/')) return null;
-  const entity = (message.entities ?? []).find((e) => e.type === 'bot_command' && e.offset === 0);
+  if (!text) return null;
+  const entity = (message.entities ?? []).find((e) => e.type === 'bot_command');
   if (!entity) return null;
-  return text.slice(0, entity.length).slice(1).split('@')[0].toLowerCase();
+  const before = text.slice(0, entity.offset);
+  if (entity.offset !== 0 && !/^@\S+\s*$/.test(before)) return null;
+  return text.slice(entity.offset, entity.offset + entity.length).slice(1).split('@')[0].toLowerCase();
 }
 
 // go equivalent: strings.Contains(text, "@"+username), but exact via the full
