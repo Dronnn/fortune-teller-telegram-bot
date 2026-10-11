@@ -17,8 +17,11 @@ Telegram "fortune-teller" bot (Magic 8-Ball style) that replies in Russian.
 
 ## Setup
 
+The bot token is read from the `TELEGRAM_BOT_TOKEN` env var, or from
+`config.env` (gitignored) in the working directory:
+
 ```bash
-export TELEGRAM_BOT_TOKEN="your_token_here"
+cp config.env.example config.env   # then put your token inside
 go run .
 ```
 
@@ -28,7 +31,8 @@ See `deployment/` for service configs:
 - `com.fortune-teller.bot.plist` — launchd (macOS)
 - `fortune-teller-telegram-bot.service` — systemd (Linux)
 
-Replace `YOUR_TOKEN_HERE` with your bot token.
+Both run with the repo folder as the working directory and pick the token up
+from `config.env` — no token in the service files.
 
 ## Project layout
 

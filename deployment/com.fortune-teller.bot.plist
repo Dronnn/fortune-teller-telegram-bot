@@ -13,12 +13,6 @@
 	<key>WorkingDirectory</key>
 	<string>/Users/andrewmaier/apps/fortune-teller-telegram-bot</string>
 
-	<key>EnvironmentVariables</key>
-	<dict>
-		<key>TELEGRAM_BOT_TOKEN</key>
-		<string>YOUR_TOKEN_HERE</string>
-	</dict>
-
 	<key>RunAtLoad</key>
 	<true/>
 
