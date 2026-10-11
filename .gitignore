@@ -32,4 +32,8 @@ config.env
 !config.env.example
 
 CLAUDE.md
+AGENTS.md
 docs/
+.tgcloud/
+node_modules/
+npm-debug.log*
