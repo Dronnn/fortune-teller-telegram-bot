@@ -56,9 +56,19 @@ async function shouldRespond(message) {
   return (await isMentioned(message, lowered)) || (await repliedToBot(message));
 }
 
+// go equivalent: tgbotapi.NewMessage + ReplyToMessageID. In forum groups the
+// incoming message carries message_thread_id — without it the reply lands in
+// General instead of the topic the bot was mentioned in.
+function target(message) {
+  const chatId = message.chat.id;
+  return message.message_thread_id
+    ? { chat_id: chatId, message_thread_id: message.message_thread_id }
+    : { chat_id: chatId };
+}
+
 async function handleStart(message) {
   await api.sendMessage({
-    chat_id: message.chat.id,
+    ...target(message),
     text: '🔮 Я — магический шар предсказаний!\n\nЗадай мне вопрос, и я отвечу.\nНапиши /help чтобы узнать подробнее.',
   });
 }
@@ -66,7 +76,7 @@ async function handleStart(message) {
 async function handleHelp(message) {
   const { username } = await getMe();
   await api.sendMessage({
-    chat_id: message.chat.id,
+    ...target(message),
     parse_mode: 'Markdown',
     text: `🔮 *Как спросить предсказание:*
 
@@ -91,7 +101,7 @@ export default async function (message) {
   if (!(await shouldRespond(message))) return;
 
   await api.sendMessage({
-    chat_id: message.chat.id,
+    ...target(message),
     text: shake(),
     reply_parameters: { message_id: message.message_id },
   });
